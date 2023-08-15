@@ -1,5 +1,25 @@
 #This code translates English strings into morse code.
 
+#Converts morse string back to english
+#Converting dictionary needs to be in descending order
+#of the key length to translate correctly
+def morse_to_english(text):
+    for key, value in reverse_morse_dict.items():
+        text = text.replace(key, value)
+    return text
+
+#Converts string to morse
+def english_to_morse(text):
+    morse_table = str.maketrans(morse_dict)
+    return text.translate(morse_table)
+
+#Creates a new dict with key, value swap and reorders by 
+#key length
+def dict_key_len_reorder():
+    orig_list = [[value, key] for key, value in morse_dict.items()]
+    orig_list.sort(reverse=True, key = lambda x: len(x[0]))
+    return { kv_pair[0] : kv_pair[1] for kv_pair in orig_list}
+
 #Dictionary for morse code translations
 #Codes end with space to account for singular 
 #Space needed after letters too account for character spacing in morse code
@@ -23,18 +43,9 @@ morse_dict = {'a' : '.- ', 'b' : '-... ', 'c' : '-.-. ',
               '"' : '.-..-. ', '$' : '...-..- ', '@' : '.--.-. ',
               ' ' : '/ '}
 
-#reverses morse_dict and creates a new reverse_morse_dict sorted by
-#key length in order to translate
-reverse_morse_list = [[value, key] for key, value in morse_dict.items()]
-reverse_morse_list.sort(reverse=True, key = lambda x: len(x[0]))
-reverse_morse_dict = { kv_pair[0] : kv_pair[1] for kv_pair in reverse_morse_list}
-
+reverse_morse_dict = dict_key_len_reorder()
 original_text = str(input('Enter the text you want translated to morse: ').lower())
-morse_table = str.maketrans(morse_dict)
+translated_text = english_to_morse(original_text)
 
-translated = original_text.translate(morse_table)
-retranslated = translated
-for key, value in reverse_morse_dict.items():
-    retranslated = retranslated.replace(key, value)
-print(translated)
-print(retranslated)
+print(translated_text)
+print(morse_to_english(translated_text))
