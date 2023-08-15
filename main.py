@@ -4,7 +4,17 @@
 #Converting dictionary needs to be in descending order
 #of the key length to translate correctly
 def morse_to_english(text):
+    special_key_dict = {'-' : '@@dash@@',
+                        '.' : '@@dot@@',
+                        '/' : '@@slash@@'}
+    reverse_special_key_dict = {value : key for key, value in special_key_dict.items()}
     for key, value in reverse_morse_dict.items():
+        if key in text:
+            if value in special_key_dict.keys():
+                text = text.replace(key, special_key_dict[value])
+            else:
+                text = text.replace(key, value)
+    for key, value in reverse_special_key_dict.items():
         text = text.replace(key, value)
     return text
 
@@ -35,7 +45,7 @@ morse_dict = {'a' : '.- ', 'b' : '-... ', 'c' : '-.-. ',
               '1' : '.---- ', '2' : '..--- ', '3' : '...-- ',
               '4' : '....- ', '5' : '..... ', '6' : '-.... ',
               '7' : '--... ', '8' : '---.. ', '9' : '----. ',
-              '.' : '-.-.-. ', ',' : '--..-- ', '?' : '..--.. ',
+              '.' : '.-.-.- ', ',' : '--..-- ', '?' : '..--.. ',
               "'" : '.----. ', '!' : '-.-.--', '/' : '-..-. ',
               '(' : '-.--. ', ')' : '-.--.- ', '&' : '.-... ',
               ':' : '---... ', ';' : '-.-.-. ', '=' : '-...- ',
